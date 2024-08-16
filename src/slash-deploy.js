@@ -34,4 +34,4 @@ const slashRegister = async () => {
     }
 }
 
-slashRegister();
+slashRegister()

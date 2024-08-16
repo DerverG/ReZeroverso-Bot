@@ -17,6 +17,6 @@ const deleteGlobalCommands = async () => {
     } catch (err) {
         console.error('Error al eliminar los comandos globales:', err)
     }
-};
+}
 
 deleteGlobalCommands()
