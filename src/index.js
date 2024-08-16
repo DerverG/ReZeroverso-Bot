@@ -27,7 +27,15 @@ client.on('interactionCreate', async (interaction) => {
 
         if (interaction.commandName === 'reply') {
             const textReceived = interaction.options.getString('text')
-            interaction.channel.send({ content: textReceived, ephemeral: false })
+
+            // Deferimos la respuesta para indicar que estamos procesando
+            await interaction.deferReply({ ephemeral: true });
+
+            // Enviamos el mensaje al canal
+            await interaction.channel.send({ content: textReceived, ephemeral: false });
+
+            // Elimina la respuesta pendiente si no quieres mostrarla
+            await interaction.deleteReply();
         }
     }
 })
