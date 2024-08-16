@@ -21,7 +21,13 @@ client.on('Ready', () => {
 client.on('interactionCreate', async (interaction) => {
     if (interaction.isCommand()) {
         if (interaction.commandName === 'ping') {
-            interaction.reply('Pong!')
+            // Messagges Dissapear with ephemeral: true
+            interaction.reply({ content: "Pong!", ephemeral: false })
+        }
+
+        if (interaction.commandName === 'reply') {
+            const textReceived = interaction.options.getString('text')
+            interaction.channel.send({ content: textReceived, ephemeral: false })
         }
     }
 })
