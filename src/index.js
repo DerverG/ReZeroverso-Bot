@@ -13,3 +13,15 @@ client.login(token).then((result) => {
     console.log('Ocurrio un error al encender el bot.')
     console.error(err)
 })
+
+client.on('Ready', () => {
+    console.log('The bot is ready.')
+})
+
+client.on('interactionCreate', async (interaction) => {
+    if (interaction.isCommand()) {
+        if (interaction.commandName === 'ping') {
+            interaction.reply('Pong!')
+        }
+    }
+})
