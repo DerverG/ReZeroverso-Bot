@@ -3,7 +3,7 @@ const config = require('dotenv').config()
 const token = process.env.DISCORD_TOKEN
 
 const client = new Client ({
-    intents: [Object.keys(GatewayIntentBits)],
+    intents: [GatewayIntentBits.Guilds, Object.keys(GatewayIntentBits)],
     partials: [Object.keys(Partials)],
 })
 
