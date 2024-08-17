@@ -1,9 +1,11 @@
-module.exports.run = (client, message, args) => {
+module.exports.run = async (client, message, args) => {
     const textReceived = args.join(' ') // Une los argumentos en una cadena de texto
 
     if (!textReceived) {
         return message.channel.send({ content: 'Por favor, proporciona un texto para repetir' })
     }
     
-    message.channel.send({ content: textReceived })
+    await message.delete()
+    await message.channel.send({ content: textReceived })
+    
 }
