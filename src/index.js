@@ -48,14 +48,13 @@ client.on('interactionCreate', async (message) => {
             // Enviamos el mensaje al canal
             await message.channel.send({ content: textReceived, ephemeral: false });
 
-            // Elimina la respuesta pendiente si no quieres mostrarla
-            await message.deleteReply();
+            await message.deleteReply()
+
         }
     }
 })
 
 console.log('Comandos cargados:', client.commands.keys())
-
 
 // Commands Handler
 client.on('messageCreate', message => {
