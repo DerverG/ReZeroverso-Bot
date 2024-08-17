@@ -18,24 +18,24 @@ client.on('Ready', () => {
     console.log('The bot is ready.')
 })
 
-client.on('interactionCreate', async (interaction) => {
-    if (interaction.isCommand()) {
-        if (interaction.commandName === 'ping') {
+client.on('interactionCreate', async (message) => {
+    if (message.isCommand()) {
+        if (message.commandName === 'ping') {
             // Messagges Dissapear with ephemeral: true
-            interaction.reply({ content: "Pong!", ephemeral: false })
+            message.reply({ content: "Pong!", ephemeral: false })
         }
 
-        if (interaction.commandName === 'reply') {
-            const textReceived = interaction.options.getString('text')
+        if (message.commandName === 'reply') {
+            const textReceived = message.options.getString('text')
 
             // Deferimos la respuesta para indicar que estamos procesando
-            await interaction.deferReply({ ephemeral: true })
+            await message.deferReply({ ephemeral: true })
 
             // Enviamos el mensaje al canal
-            await interaction.channel.send({ content: textReceived, ephemeral: false });
+            await message.channel.send({ content: textReceived, ephemeral: false });
 
             // Elimina la respuesta pendiente si no quieres mostrarla
-            await interaction.deleteReply()
+            await message.deleteReply()
         }
     }
 })
