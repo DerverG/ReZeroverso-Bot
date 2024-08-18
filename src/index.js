@@ -82,4 +82,4 @@ client.on('interactionCreate', async interaction => {
         // Enviar una respuesta basada en la opción seleccionada
         await interaction.update({ content: `Has seleccionado: ${selectedOption}`, components: [] })
     }
-});
+})

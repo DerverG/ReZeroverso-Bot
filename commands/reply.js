@@ -42,3 +42,6 @@ module.exports = {
     name: 'reply',
     description: 'Repite lo que dices.',
 }
+
+exports.name= 'reply'
+exports.description= 'Repite lo que dices.'

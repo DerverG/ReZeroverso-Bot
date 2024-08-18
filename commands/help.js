@@ -41,3 +41,6 @@ module.exports = {
     name: 'help',
     description: 'Muestra los comandos disponibles.',
 }
+
+exports.name = 'help'
+exports.description = 'Muestra los comandos disponibles.'
