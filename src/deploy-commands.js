@@ -13,10 +13,12 @@ const slashRegister = async () => {
         // to global config change next line to:    Routes.applicationCommands(botID)
         await rest.put(Routes.applicationGuildCommands(botID, serverID), {
             body: [
+                // Ping
                 new SlashCommandBuilder()
                     .setName('ping')
                     .setDescription('Reply with a Pong!'),
 
+                // Reply
                 new SlashCommandBuilder()
                     .setName('reply')
                     .setDescription('Repeat your sentence.')
@@ -25,7 +27,17 @@ const slashRegister = async () => {
                         .setName('text')
                         .setDescription('Say anything.')
                         .setRequired(true)
-                    })
+                    }),
+
+                // Help
+                new SlashCommandBuilder()
+                    .setName('help')
+                    .setDescription('Muestra los comandos disponibles.'),
+
+                // Projects
+                new SlashCommandBuilder()
+                    .setName('projects')
+                    .setDescription('Muestra la lista de projectos.'),
                     
             ]
         })

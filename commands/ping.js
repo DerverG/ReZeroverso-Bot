@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js')
 
 module.exports = {
-    // Configuración del Slash Command
+    // Configuracion del Slash Command
     data: new SlashCommandBuilder()
         .setName('ping')
         .setDescription('Responde con un Pong!'),
@@ -20,5 +20,5 @@ module.exports = {
     description: 'Responde con un Pong!',
 }
 
-exports.name = 'reply'
-exports.description = 'Repite lo que dices.'
+exports.name = 'ping'
+exports.description = 'Responde con un Pong!'

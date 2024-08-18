@@ -5,12 +5,13 @@ const path = require('path')
 const fs = require('fs')
 const prefix = '!'
 
+// Cliente de Discord.js
 const client = new Client ({
     intents: [GatewayIntentBits.Guilds, Object.keys(GatewayIntentBits)],
     partials: [Object.keys(Partials)],
 })
 
-// Command Handler
+// Read Commands
 client.commands = new Collection()
 const commandsPath = path.join(__dirname, '../commands') // Ruta correcta a la carpeta commands
 const commands = fs.readdirSync(commandsPath).filter(file => file.endsWith('js'))
@@ -19,6 +20,8 @@ for(file of commands) {
     const command = require(`./../commands/${commandName}`)
     client.commands.set(commandName, command)
 }
+
+console.log('Comandos cargados:', client.commands.keys())
 
 client.login(token).then((result) => {
     console.log(`El Bot: ${client.user.tag} esta conectado.`)
@@ -30,8 +33,6 @@ client.login(token).then((result) => {
 client.on('ready', () => {
     console.log('The bot is ready.')
 })
-
-console.log('Comandos cargados:', client.commands.keys())
 
 // Slash Commands - Command Handler
 client.on('interactionCreate', async (interaction) => {
@@ -69,3 +70,16 @@ client.on('messageCreate', message => {
         message.channel.send({ content: 'Hubo un error al ejecutar el comando.' })
     }
 })
+
+// Manage Interactions
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isStringSelectMenu()) return // Verificar que la interacción es de tipo select menu
+
+    if (interaction.customId === 'select_menu') {
+        // Obtener el valor seleccionado
+        const selectedOption = interaction.values[0]
+
+        // Enviar una respuesta basada en la opción seleccionada
+        await interaction.update({ content: `Has seleccionado: ${selectedOption}`, components: [] })
+    }
+});
