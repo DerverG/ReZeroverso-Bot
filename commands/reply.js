@@ -1,4 +1,4 @@
-module.exports.run = async (client, message, args) => {
+exports.run = async (client, message, args) => {
     const textReceived = args.join(' ') // Une los argumentos en una cadena de texto
 
     if (!textReceived) {
@@ -9,3 +9,6 @@ module.exports.run = async (client, message, args) => {
     await message.channel.send({ content: textReceived })
     
 }
+
+exports.name = 'reply'
+exports.description = 'Repite lo que dices.'
