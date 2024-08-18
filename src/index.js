@@ -31,46 +31,41 @@ client.on('ready', () => {
     console.log('The bot is ready.')
 })
 
-// Slash Commands
-client.on('interactionCreate', async (message) => {
-    if (message.isCommand()) {
-        if (message.commandName === 'ping') {
-            // Messagges Dissapear with ephemeral: true
-            message.reply({ content: "Pong!", ephemeral: false })
-        }
+console.log('Comandos cargados:', client.commands.keys())
 
-        if (message.commandName === 'reply') {
-            const textReceived = message.options.getString('text')
+// Slash Commands - Command Handler
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isCommand()) return
 
-            // Deferimos la respuesta para indicar que estamos procesando
-            await message.deferReply({ ephemeral: true });
+    const command = client.commands.get(interaction.commandName)
 
-            // Enviamos el mensaje al canal
-            await message.channel.send({ content: textReceived, ephemeral: false });
+    if (!command) {
+        return interaction.reply({ content: 'Comando no encontrado.', ephemeral: true })
+    }
 
-            await message.deleteReply()
-
-        }
+    try {
+        await command.execute(interaction)
+    } catch (error) {
+        console.error(error)
+        await interaction.reply({ content: 'Hubo un error al ejecutar el comando.', ephemeral: true })
     }
 })
 
-console.log('Comandos cargados:', client.commands.keys())
-
-// Commands Handler
+// Text Commands - Command Handler
 client.on('messageCreate', message => {
     if (message.author.bot) return // Ignora mensajes de otros bots
     if (!message.content.startsWith(prefix)) return // Ignora mensajes que no comiencen con el prefijo
 
-    const args = message.content.slice(prefix.length).trim().split(/ +/g)
+    const args = message.content.slice(prefix.length).trim().split(/ +/)
     const commandName = args.shift().toLowerCase()
     const command = client.commands.get(commandName)
 
     if (!command) return message.channel.send({ content: 'No existe ese comando' })
-    
+
     try {
         command.run(client, message, args)
     } catch (error) {
         console.error(error)
-        message.channel.send({ content: 'Hubo un error al ejecutar el comando' })
+        message.channel.send({ content: 'Hubo un error al ejecutar el comando.' })
     }
 })
