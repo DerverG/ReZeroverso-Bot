@@ -1,0 +1,61 @@
+{
+    "projects": [
+        {
+            "id": 1,
+            "title": "Volumen 12 [LN]",
+            "status": "Finalizado"
+        },
+        {
+            "id": 2,
+            "title": "Volumen 13 [LN]",
+            "status": "En Progreso"
+        },
+        {
+            "id": 3,
+            "title": "Volumen 29 [WN]",
+            "status": "Pausado"
+        },
+        {
+            "id": 4,
+            "title": "Volumen 30 [WN]",
+            "status": "Pendiente"
+        }
+    ],
+    "tasks": [
+        {
+            "id": 1,
+            "project_id": 1,
+            "title": "Capitulo 1",
+            "responsible": "@Derver",
+            "status": "Terminado"
+        },
+        {
+            "id": 2,
+            "project_id": 1,
+            "title": "Capitulo 2",
+            "responsible": "@Zetaceo",
+            "status": "En Progreso"
+        },
+        {
+            "id": 3,
+            "project_id": 1,
+            "title": "Capitulo 3",
+            "responsible": "@Zack",
+            "status": "En Progreso"
+        },
+        {
+            "id": 4,
+            "project_id": 1,
+            "title": "Capitulo 4",
+            "responsible": "@Yeimus",
+            "status": "Pausado"
+        },
+        {
+            "id": 5,
+            "project_id": 1,
+            "title": "Capitulo 5",
+            "responsible": "Sin Asignar",
+            "status": "Pendiente"
+        }
+    ]
+}
