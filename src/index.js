@@ -60,7 +60,7 @@ client.on('interactionCreate', async (interaction) => {
 client.on('messageCreate', message => {
     if (message.author.bot) return // Ignora mensajes de otros bots
     if (!message.content.startsWith(prefix)) return // Ignora mensajes que no comiencen con el prefijo
-    if (!interaction.member.roles.cache.has(allowedRoleId)) return // Limitar uso a un Rol
+    if (!message.member.roles.cache.has(allowedRoleId)) return // Limitar uso a un Rol
 
     const args = message.content.slice(prefix.length).trim().split(/ +/)
     const commandName = args.shift().toLowerCase()
