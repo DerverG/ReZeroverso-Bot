@@ -5,6 +5,8 @@ const path = require('path')
 const fs = require('fs')
 const prefix = '!'
 
+const allowedRoleId = '1273142126217003008';
+
 // Cliente de Discord.js
 const client = new Client ({
     intents: [GatewayIntentBits.Guilds, Object.keys(GatewayIntentBits)],
@@ -37,6 +39,8 @@ client.on('ready', () => {
 // Slash Commands - Command Handler
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return
+    if (!interaction.member.roles.cache.has(allowedRoleId)) return // Limitar uso a un Rol
+
 
     const command = client.commands.get(interaction.commandName)
 
@@ -56,6 +60,7 @@ client.on('interactionCreate', async (interaction) => {
 client.on('messageCreate', message => {
     if (message.author.bot) return // Ignora mensajes de otros bots
     if (!message.content.startsWith(prefix)) return // Ignora mensajes que no comiencen con el prefijo
+    if (!interaction.member.roles.cache.has(allowedRoleId)) return // Limitar uso a un Rol
 
     const args = message.content.slice(prefix.length).trim().split(/ +/)
     const commandName = args.shift().toLowerCase()
@@ -74,6 +79,8 @@ client.on('messageCreate', message => {
 // Manage Interactions
 client.on('interactionCreate', async interaction => {
     if (!interaction.isStringSelectMenu()) return // Verificar que la interacción es de tipo select menu
+    if (!interaction.member.roles.cache.has(allowedRoleId)) return // Limitar uso a un Rol
+
 
     if (interaction.customId === 'select_menu') {
         // Obtener el valor seleccionado
