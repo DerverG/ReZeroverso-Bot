@@ -1,4 +1,4 @@
-const {Client, GatewayIntentBits, Partials, Collection, Events} = require('discord.js')
+const { Client, GatewayIntentBits, Partials, Collection, Events } = require('discord.js')
 const config = require('dotenv').config()
 const writeData = require('../data/dataWriter')
 const loadData = require('../data/dataLoader')
@@ -7,12 +7,12 @@ const path = require('path')
 const fs = require('fs')
 const prefix = '!'
 
-const { printTaskEmbed } = require('../commands/tasks');
+const { printTaskEmbed } = require('../commands/tasks')
 
-const allowedRoleId = '1273142126217003008';
+const allowedRoleId = '1273142126217003008'
 
 // Cliente de Discord.js
-const client = new Client ({
+const client = new Client({
     intents: [GatewayIntentBits.Guilds, Object.keys(GatewayIntentBits)],
     partials: [Object.keys(Partials)],
 })
@@ -21,7 +21,7 @@ const client = new Client ({
 client.commands = new Collection()
 const commandsPath = path.join(__dirname, '../commands') // Ruta correcta a la carpeta commands
 const commands = fs.readdirSync(commandsPath).filter(file => file.endsWith('js'))
-for(file of commands) {
+for (file of commands) {
     const commandName = file.split('.')[0]
     const command = require(`./../commands/${commandName}`)
     client.commands.set(commandName, command)
@@ -44,7 +44,6 @@ client.on('ready', () => {
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return
     if (!interaction.member.roles.cache.has(allowedRoleId)) return // Limitar uso a un Rol
-
 
     const command = client.commands.get(interaction.commandName)
 
@@ -82,54 +81,54 @@ client.on('messageCreate', message => {
 
 // Manage Interactions
 client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isCommand() && !interaction.isStringSelectMenu()) return;
+    if (!interaction.isCommand() && !interaction.isStringSelectMenu()) return
 
     if (interaction.isStringSelectMenu()) {
-        const selectedOption = interaction.values[0];
-        const data = loadData();
+        const selectedOption = interaction.values[0]
+        const data = loadData()
 
         if (interaction.customId === 'modify_project') {
             // Enviar un mensaje pidiendo el nombre del proyecto
-            await interaction.reply({ content: 'Por favor, proporciona el nombre del Proyecto:', ephemeral: false });
+            await interaction.reply({ content: 'Por favor, proporciona el nombre del Proyecto:', ephemeral: false })
 
             // Colector de mensajes para capturar el nombre del proyecto
-            const filter = msg => msg.author.id === interaction.user.id && msg.content.length > 0;
-            const collector = interaction.channel.createMessageCollector({ filter, time: 60000 });
+            const filter = msg => msg.author.id === interaction.user.id && msg.content.length > 0
+            const collector = interaction.channel.createMessageCollector({ filter, time: 60000 })
 
             collector.on('collect', async msg => {
-                const nombre = msg.content;
+                const nombre = msg.content
 
                 // Enviar un nuevo mensaje con el nombre del proyecto recibido
-                await interaction.channel.send({ content: `[Agregar] Nombre del proyecto recibido: ${nombre}` });
+                await interaction.channel.send({ content: `[Agregar] Nombre del proyecto recibido: ${nombre}` })
 
                 // Imprimir el nombre del proyecto en la consola
-                console.log(`[Agregar] Nombre del proyecto recibido: ${nombre}`);
+                console.log(`[Agregar] Nombre del proyecto recibido: ${nombre}`)
 
                 // Finaliza el colector después de capturar el mensaje
-                collector.stop();
-            });
+                collector.stop()
+            })
 
             collector.on('end', collected => {
                 if (collected.size === 0) {
-                    interaction.channel.send({ content: 'Tiempo de espera agotado. No se recibió ningún nombre de proyecto.' });
+                    interaction.channel.send({ content: 'Tiempo de espera agotado. No se recibió ningún nombre de proyecto.' })
                 }
-            });
+            })
 
         } else if (interaction.customId === 'modify_task') {
             // Manejo de opciones para actualizar tareas
             if (selectedOption === 'update_task') {
-                await interaction.reply({ content: 'Selecciona una opción para actualizar la tarea: Añadir, Eliminar, Cambiar Responsable, Cambiar Estado.', ephemeral: true });
+                await interaction.reply({ content: 'Selecciona una opción para actualizar la tarea: Añadir, Eliminar, Cambiar Responsable, Cambiar Estado.', ephemeral: true })
                 // Aquí puedes agregar la lógica para manejar las opciones de actualización de tarea
             }
         } else {
-            const selectedProject = data.projects.find(project => project.id.toString() === selectedOption);
+            const selectedProject = data.projects.find(project => project.id.toString() === selectedOption)
 
             if (selectedProject) {
                 // Llamar a la función para imprimir el embed con el título del proyecto
-                await printTaskEmbed(interaction, selectedProject.title);
+                await printTaskEmbed(interaction, selectedProject.title)
             } else {
-                await interaction.reply({ content: 'Proyecto no encontrado', ephemeral: true });
+                await interaction.reply({ content: 'Proyecto no encontrado', ephemeral: true })
             }
         }
     }
-});
+})
