@@ -39,7 +39,21 @@ const slashRegister = async () => {
                 new SlashCommandBuilder()
                     .setName('projects')
                     .setDescription('Muestra la lista de proyectos.'),
-                    
+                
+                // Modify
+                new SlashCommandBuilder()
+                    .setName('modify')
+                    .setDescription('Agregar/Eliminar/Actualizar Proyectos o Tareas')
+                    .addStringOption(option => 
+                        option
+                            .setName('type')
+                            .setDescription('Selecciona Proyecto o Tarea')
+                            .setRequired(true)
+                            .addChoices(
+                                { name: 'Proyecto', value: 'project' },
+                                { name: 'Tarea', value: 'task' }
+                            )
+                    ) 
             ]
         })
         console.log('Todos los comandos de guild eliminados con éxito.')
