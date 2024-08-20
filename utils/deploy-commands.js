@@ -38,42 +38,127 @@ const slashRegister = async () => {
                 // Projects
                 new SlashCommandBuilder()
                     .setName('projects')
-                    .setDescription('Muestra la lista de proyectos.'),
-
-                // addProject
-                new SlashCommandBuilder()
-                    .setName('addproject')
-                    .setDescription('Agregar un nuevo proyecto.')
-                    .addStringOption(x => {
-                        return x
-                            .setName('title')
-                            .setDescription('Ingresa un titulo para el proyecto.')
-                            .setRequired(true)
+                    .setDescription('Administracion de proyectos.')
+                    .addSubcommand(subcommand => {
+                        return subcommand
+                            .setName('view')
+                            .setDescription('Ver lista de proyectos.')
+                    })
+                    .addSubcommand(subcommand => {
+                        return subcommand
+                            .setName('add')
+                            .setDescription('Agregar un proyecto.')
+                            .addStringOption(option => {
+                                return option
+                                    .setName('title')
+                                    .setDescription('Ingresa el titulo del proyecto.')
+                                    .setRequired(true)
+                            })
+                    })
+                    .addSubcommand(subcommand => {
+                        return subcommand
+                            .setName('remove')
+                            .setDescription('Elimina un proyecto.')
+                            .addIntegerOption(option => {
+                                return option
+                                    .setName('id')
+                                    .setDescription('Ingrese un ID de un proyecto.')
+                                    .setRequired(true)
+                            })
+                    })
+                    .addSubcommand(subcommand => {
+                        return subcommand
+                            .setName('update')
+                            .setDescription('Actualiza el estado de un proyecto')
+                            .addIntegerOption(option => {
+                                return option
+                                    .setName('id')
+                                    .setDescription('Ingrese un ID de un proyecto.')
+                                    .setRequired(true)
+                            })
+                    // Añadira un selector para el estado.
                     }),
 
-                // removeProject
+                // Tasks
                 new SlashCommandBuilder()
-                    .setName('removeproject')
-                    .setDescription('Elimina un proyecto')
-                    .addNumberOption(option => {
-                        return option
-                            .setName('id')
-                            .setDescription('Ingresa ID del proyecto.')
-                            .setRequired(true)
-                    }),
-
-                // statusProject
-                new SlashCommandBuilder()
-                    .setName('statusproject')
-                    .setDescription('Actualiza el estado del proyecto.')
-                    .addNumberOption(option => {
-                        return option
-                            .setName('id')
-                            .setDescription('Ingresa ID del proyecto')
-                            .setRequired(true)
-                    }),
-
-
+                    .setName('tasks')
+                    .setDescription('Administracion de Tareas')
+                    .addSubcommand(subcommand => {
+                        return subcommand
+                        .setName('add')
+                        .setDescription('Agregar una tarea.')
+                        .addIntegerOption(option => {
+                            return option
+                                .setName('idproject')
+                                .setDescription('Ingresa un ID de un proyecto')
+                                .setRequired(true)
+                        })
+                        .addStringOption(option => {
+                            return option
+                                .setName('title')
+                                .setDescription('Ingresa el titulo de la tarea.')
+                                .setRequired(true)
+                        })
+                    })
+                    .addSubcommand(subcommand => {
+                        return subcommand
+                            .setName('remove')
+                            .setDescription('Elimina una tarea.')
+                            .addIntegerOption(option => {
+                                return option
+                                    .setName('idproject')
+                                    .setDescription('Ingresa un ID de un proyecto')
+                                    .setRequired(true)
+                            })
+                            .addIntegerOption(option => {
+                                return option
+                                    .setName('idtask')
+                                    .setDescription('Ingrese un ID de una tarea.')
+                                    .setRequired(true)
+                            })
+                    })
+                    .addSubcommand(subcommand => {
+                        return subcommand
+                            .setName('update')
+                            .setDescription('Actualiza el estado de una tarea.')
+                            .addIntegerOption(option => {
+                                return option
+                                    .setName('idproject')
+                                    .setDescription('Ingresa un ID de un proyecto.')
+                                    .setRequired(true)
+                            })
+                            .addIntegerOption(option => {
+                                return option
+                                    .setName('idtask')
+                                    .setDescription('Ingrese un ID de una tarea.')
+                                    .setRequired(true)
+                            })
+                            // Añadira un selector para el estado.
+                        })
+                    .addSubcommand(subcommand => {
+                        return subcommand
+                            .setName('responsible')
+                            .setDescription('Asigna a un encargado de la tarea')
+                            .addIntegerOption(option => {
+                                return option
+                                    .setName('idproject')
+                                    .setDescription('Ingresa un ID de un proyecto.')
+                                    .setRequired(true)
+                            })
+                            .addIntegerOption(option => {
+                                return option
+                                    .setName('idtask')
+                                    .setDescription('Ingrese un ID de una tarea.')
+                                    .setRequired(true)
+                            })
+                            .addUserOption(user => {
+                                return user
+                                    .setName('user')
+                                    .setDescription('Ingrese el usuario a cargo.')
+                                    .setRequired(true)
+                            })
+                    })
+                    
             ]
         })
         console.log('Todos los comandos de guild agregados con éxito.')
