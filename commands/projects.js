@@ -2,19 +2,30 @@ const { SlashCommandBuilder, EmbedBuilder, StringSelectMenuBuilder, ActionRowBui
 const loadData = require('../data/dataLoader')
 
 let page = 0 // Variable global para el seguimiento de la página
+const allowedRoleId = '1273142126217003008'
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('projects')
-        .setDescription('Muestra la lista de proyectos.'),
+        .setDescription('Administracion de proyectos.')
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('view')
+                .setDescription('Ver lista de proyectos.')
+        )
+    // Otros subcomandos aquí (add, remove, update) si es necesario
+    ,
 
     async execute(interaction) {
-        const data = loadData()
-        const projectsPerPage = 5
         const command = interaction.options.getSubcommand()
+
+        if (interaction.member.roles.cache.has(allowedRoleId))
 
         switch (command) {
             case 'view':
+                const data = loadData()
+                const projectsPerPage = 5
+
                 const getEmbed = (page) => {
                     const start = page * projectsPerPage
                     const end = start + projectsPerPage
@@ -22,7 +33,7 @@ module.exports = {
                     const IDs = limitedProjects.map(project => project.id).join('\n')
                     const nombres = limitedProjects.map(project => project.title).join('\n')
                     const estados = limitedProjects.map(project => project.status).join('\n')
-        
+
                     return new EmbedBuilder()
                         .setTitle('**Lista de Proyectos**')
                         .setColor('#00ffff')
@@ -34,12 +45,12 @@ module.exports = {
                             { name: 'Estado', value: estados, inline: true }
                         )
                 }
-        
+
                 const getSelectMenu = (page) => {
                     const start = page * projectsPerPage
                     const end = start + projectsPerPage
                     const limitedProjects = data.projects.slice(start, end)
-        
+
                     return new StringSelectMenuBuilder()
                         .setCustomId('select_menu')
                         .setPlaceholder('Seleccionar proyecto')
@@ -50,10 +61,10 @@ module.exports = {
                             }))
                         )
                 }
-        
+
                 const updateButtons = (page) => {
                     const totalPages = Math.ceil(data.projects.length / projectsPerPage)
-        
+
                     return [
                         new ButtonBuilder()
                             .setCustomId('previous')
@@ -61,7 +72,7 @@ module.exports = {
                             .setStyle(ButtonStyle.Primary)
                             .setEmoji('⬅️')
                             .setDisabled(page === 0),
-        
+
                         new ButtonBuilder()
                             .setCustomId('next')
                             .setLabel('Next')
@@ -70,24 +81,24 @@ module.exports = {
                             .setDisabled(page >= totalPages - 1)
                     ]
                 }
-        
+
                 const embed = getEmbed(page)
                 const selectMenu = getSelectMenu(page)
-        
+
                 const buttonRow = new ActionRowBuilder().addComponents(updateButtons(page))
                 const selectMenuRow = new ActionRowBuilder().addComponents(selectMenu)
-        
+
                 // Enviar el embed con los botones y el menú desplegable
                 await interaction.reply({ embeds: [embed], components: [selectMenuRow, buttonRow] })
-        
+
                 const filter = i => i.user.id === interaction.user.id
                 const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 })
-        
+
                 collector.on('collect', async i => {
                     try {
                         // Asegúrate de que la interacción sea válida
                         if (!i.isButton() && !i.isStringSelectMenu()) return
-                
+
                         // Manejar interacciones de botones
                         if (i.isButton()) {
                             if (i.customId === 'next') {
@@ -95,12 +106,12 @@ module.exports = {
                             } else if (i.customId === 'previous') {
                                 page--
                             }
-                
+
                             // Actualizar el embed, el menú desplegable y los botones
                             const updatedEmbed = getEmbed(page)
                             const updatedSelectMenu = getSelectMenu(page)
                             const updatedButtons = updateButtons(page)
-                
+
                             await i.update({
                                 embeds: [updatedEmbed],
                                 components: [
@@ -109,29 +120,37 @@ module.exports = {
                                 ]
                             })
                         }
-                
-                        // Manejar interacciones de select menu (este bloque puede ser eliminado si ya se maneja en index.js)
+
+                        // Manejar interacciones de select menu
                         if (i.isStringSelectMenu() && i.customId === 'select_menu') {
                             const selectedId = i.values[0]
                             const selectedProject = data.projects.find(project => project.id.toString() === selectedId)
-                            
-                            
+
+                            // Aquí puedes manejar lo que sucede al seleccionar un proyecto
                         }
                     } catch (error) {
                         console.error('Error al manejar la interacción:', error)
+                        await i.reply({ content: 'Ocurrió un error al procesar tu interacción.', ephemeral: true })
                     }
                 })
-        
                 collector.on('end', collected => {
                     // Desactivar botones después de 60 segundos
                     interaction.editReply({ components: [] })
                 })
-                break;
-        }
+                break
+            case 'add':
+                
+                break
+            case 'remove':
+                
+                break
+            case 'update':
+                
+                break
 
-        
+        }
     },
 }
 
 exports.name = 'projects'
-exports.description = 'Muestra la lista de proyectos'
+exports.description = 'Administracion de proyectos.'
