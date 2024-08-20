@@ -76,7 +76,17 @@ const slashRegister = async () => {
                                     .setDescription('Ingrese un ID de un proyecto.')
                                     .setRequired(true)
                             })
-                    // Añadira un selector para el estado.
+                            .addStringOption(option => {
+                                return option
+                                    .setName('status')
+                                    .setDescription('Seleccione el nuevo estado del proyecto.')
+                                    .setRequired(true)
+                                    .addChoices(
+                                        { name: 'Finalizado', value: 'Finalizado' },
+                                        { name: 'En Progreso', value: 'En Progreso' },
+                                        { name: 'Pausado', value: 'Pausado' }
+                                    )
+                            })
                     }),
 
                 // Tasks
@@ -85,20 +95,20 @@ const slashRegister = async () => {
                     .setDescription('Administracion de Tareas')
                     .addSubcommand(subcommand => {
                         return subcommand
-                        .setName('add')
-                        .setDescription('Agregar una tarea.')
-                        .addIntegerOption(option => {
-                            return option
-                                .setName('idproject')
-                                .setDescription('Ingresa un ID de un proyecto')
-                                .setRequired(true)
-                        })
-                        .addStringOption(option => {
-                            return option
-                                .setName('title')
-                                .setDescription('Ingresa el titulo de la tarea.')
-                                .setRequired(true)
-                        })
+                            .setName('add')
+                            .setDescription('Agregar una tarea.')
+                            .addIntegerOption(option => {
+                                return option
+                                    .setName('idproject')
+                                    .setDescription('Ingresa un ID de un proyecto')
+                                    .setRequired(true)
+                            })
+                            .addStringOption(option => {
+                                return option
+                                    .setName('title')
+                                    .setDescription('Ingresa el titulo de la tarea.')
+                                    .setRequired(true)
+                            })
                     })
                     .addSubcommand(subcommand => {
                         return subcommand
@@ -133,8 +143,8 @@ const slashRegister = async () => {
                                     .setDescription('Ingrese un ID de una tarea.')
                                     .setRequired(true)
                             })
-                            // Añadira un selector para el estado.
-                        })
+                        // Añadira un selector para el estado.
+                    })
                     .addSubcommand(subcommand => {
                         return subcommand
                             .setName('responsible')
@@ -158,7 +168,7 @@ const slashRegister = async () => {
                                     .setRequired(true)
                             })
                     })
-                    
+
             ]
         })
         console.log('Todos los comandos de guild agregados con éxito.')
