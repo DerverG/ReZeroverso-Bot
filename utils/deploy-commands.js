@@ -1,5 +1,5 @@
 const config = require('dotenv').config()
-const {REST, Routes, SlashCommandBuilder} = require('discord.js')
+const { REST, Routes, SlashCommandBuilder } = require('discord.js')
 
 // Info needed for slash commands
 const botID = process.env.DISCORD_BOT
@@ -9,7 +9,7 @@ const botToken = process.env.DISCORD_TOKEN
 const rest = new REST().setToken(botToken)
 const slashRegister = async () => {
     try {
-        console.log('Eliminando todos los comandos de guild...')
+        console.log('Agregando todos los comandos de guild...')
         // to test change next line to:             Routes.applicationGuildCommands(botID, serverID)
         // to global config change next line to:    Routes.applicationCommands(botID)
         await rest.put(Routes.applicationGuildCommands(botID, serverID), {
@@ -25,9 +25,9 @@ const slashRegister = async () => {
                     .setDescription('Repeat your sentence.')
                     .addStringOption(option => {
                         return option
-                        .setName('text')
-                        .setDescription('Say anything.')
-                        .setRequired(true)
+                            .setName('text')
+                            .setDescription('Say anything.')
+                            .setRequired(true)
                     }),
 
                 // Help
@@ -39,26 +39,46 @@ const slashRegister = async () => {
                 new SlashCommandBuilder()
                     .setName('projects')
                     .setDescription('Muestra la lista de proyectos.'),
-                
-                // Modify
+
+                // addProject
                 new SlashCommandBuilder()
-                    .setName('modify')
-                    .setDescription('Agregar/Eliminar/Actualizar Proyectos o Tareas')
-                    .addStringOption(option => 
-                        option
-                            .setName('type')
-                            .setDescription('Selecciona Proyecto o Tarea')
+                    .setName('addproject')
+                    .setDescription('Agregar un nuevo proyecto.')
+                    .addStringOption(x => {
+                        return x
+                            .setName('title')
+                            .setDescription('Ingresa un titulo para el proyecto.')
                             .setRequired(true)
-                            .addChoices(
-                                { name: 'Proyecto', value: 'project' },
-                                { name: 'Tarea', value: 'task' }
-                            )
-                    ) 
+                    }),
+
+                // removeProject
+                new SlashCommandBuilder()
+                    .setName('removeproject')
+                    .setDescription('Elimina un proyecto')
+                    .addNumberOption(option => {
+                        return option
+                            .setName('id')
+                            .setDescription('Ingresa ID del proyecto.')
+                            .setRequired(true)
+                    }),
+
+                // statusProject
+                new SlashCommandBuilder()
+                    .setName('statusproject')
+                    .setDescription('Actualiza el estado del proyecto.')
+                    .addNumberOption(option => {
+                        return option
+                            .setName('id')
+                            .setDescription('Ingresa ID del proyecto')
+                            .setRequired(true)
+                    }),
+
+
             ]
         })
-        console.log('Todos los comandos de guild eliminados con éxito.')
+        console.log('Todos los comandos de guild agregados con éxito.')
     } catch (err) {
-        cconsole.error('Error al eliminar los comandos de guild:', err)
+        console.error('Error al agregar los comandos de guild:', err)
     }
 }
 
