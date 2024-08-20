@@ -14,23 +14,24 @@ module.exports = {
             .setTitle('**Lista de Proyectos**')
             .setColor('#00ffff')
             .setImage('https://media.discordapp.net/attachments/1274664335485960232/1274666549269233755/banner_bot_discord.png?ex=66c3153b&is=66c1c3bb&hm=6e264c4ed8b655ca4017360d8208221ec0bd41f76070c6d55f691edf21887778&=&format=webp&quality=lossless')
+            .setFooter({text: `Pagina 1 de X`})
             .addFields(
                 { name: 'Nombre', inline: true ,value: 'Proyecto 1\nProyecto 2\nProyecto 3' },
                 { name: 'Estado', inline:true ,value: '(Finalizado)\n(En Progreso)\n(Pendiente)' }
             )
 
         // Crear Botones
-        const add = new ButtonBuilder()
-            .setCustomId('add')
-            .setLabel('Agregar')
+        const previous = new ButtonBuilder()
+            .setCustomId('previous')
+            //.setLabel('')
             .setStyle(ButtonStyle.Primary)
-            .setEmoji('➕')
+            .setEmoji('⬅️')
         
-        const remove = new ButtonBuilder()
-            .setCustomId('remove')
-            .setLabel('Eliminar')
+        const next = new ButtonBuilder()
+            .setCustomId('next')
+            //.setLabel('')
             .setStyle(ButtonStyle.Primary)
-            .setEmoji('❌')
+            .setEmoji('➡️')
         
         const update = new ButtonBuilder()
             .setCustomId('update')
@@ -67,7 +68,7 @@ module.exports = {
 
             // Crear la fila de acción para incluir el menú desplegable
             const selectMenuRow = new ActionRowBuilder().addComponents(selectMenu)
-            const buttonRow = new ActionRowBuilder().addComponents(add, remove, update)
+            const buttonRow = new ActionRowBuilder().addComponents(previous, next, update)
 
             // Enviar el embed con el menú desplegable
             await interaction.reply({ embeds: [embed], components: [selectMenuRow, buttonRow] })

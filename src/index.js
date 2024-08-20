@@ -1,5 +1,7 @@
 const {Client, GatewayIntentBits, Partials, Collection} = require('discord.js')
 const config = require('dotenv').config()
+const writeData = require('../data/dataWriter')
+const loadData = require('../data/dataLoader')
 const token = process.env.DISCORD_TOKEN
 const path = require('path')
 const fs = require('fs')
