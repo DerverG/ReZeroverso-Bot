@@ -47,7 +47,7 @@ const slashRegister = async () => {
                     .addSubcommand(subcommand => {
                         return subcommand
                             .setName('add')
-                            .setDescription('Agregar un proyecto.')
+                            .setDescription('Añadir un nuevo proyecto.')
                             .addStringOption(option => {
                                 return option
                                     .setName('title')

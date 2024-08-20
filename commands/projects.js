@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, StringSelectMenuBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
 const loadData = require('../data/dataLoader')
+const writeData = require('../data/dataWriter')
 
 let page = 0 // Variable global para el seguimiento de la página
 const allowedRoleId = '1273142126217003008'
@@ -13,17 +14,25 @@ module.exports = {
                 .setName('view')
                 .setDescription('Ver lista de proyectos.')
         )
-    // Otros subcomandos aquí (add, remove, update) si es necesario
-    ,
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('add')
+                .setDescription('Añadir un nuevo proyecto.')
+                .addStringOption(option =>
+                    option
+                        .setName('title')
+                        .setDescription('Título del proyecto')
+                        .setRequired(true))
+        ),
 
     async execute(interaction) {
         const command = interaction.options.getSubcommand()
+        const data = loadData()
 
         if (interaction.member.roles.cache.has(allowedRoleId))
 
         switch (command) {
             case 'view':
-                const data = loadData()
                 const projectsPerPage = 5
 
                 const getEmbed = (page) => {
@@ -139,13 +148,29 @@ module.exports = {
                 })
                 break
             case 'add':
+                const title = interaction.options.getString('title')
+                const newID = Math.max(...data.projects.map(project => project.id)) + 1
+
+                // Nuevo proyecto
+                const newProject = {
+                    id: newID,
+                    title: title,
+                    status: 'Pendiente' // default
+                }
+
+                // Agregar al JSON
+                data.projects.push(newProject)
                 
+                // Guardar cambios
+                writeData(data)
+
+                await interaction.reply({ content: `ID: ${newID} Titulo: ${title} Guardado correctamente.`, ephemeral: true })
                 break
             case 'remove':
                 
                 break
             case 'update':
-                
+
                 break
 
         }
