@@ -24,6 +24,17 @@ module.exports = {
                         .setName('title')
                         .setDescription('Título del proyecto')
                         .setRequired(true))
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('remove')
+                .setDescription('Elimina un proyecto.')
+                .addIntegerOption(option =>
+                    option
+                        .setName('id')
+                        .setDescription('Ingrese un ID de un proyecto.')
+                        .setRequired(true)
+                )
         ),
 
     async execute(interaction) {
@@ -174,8 +185,18 @@ module.exports = {
 
                 await interaction.reply({ content: `ID: ${newID} Titulo: ${title} Guardado correctamente.`, ephemeral: true })
                 break
+
             case 'remove':
-                
+                const idToRemove = interaction.options.getInteger('id')
+                const projectIndex = data.projects.findIndex(project => project.id === idToRemove)
+
+                if (projectIndex !== -1) {
+                        const removedProject = data.projects.splice(projectIndex, 1)[0]
+                        writeData(data)
+                        await interaction.reply({ content: `El proyecto **${removedProject.title}** ha sido eliminado correctamente.`, ephemeral: true })
+                    } else {
+                        await interaction.reply({ content: 'No se pudo encontrar un proyecto con ese ID.', ephemeral: true })
+                    }
                 break
             case 'update':
 
