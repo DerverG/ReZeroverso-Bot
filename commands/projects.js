@@ -4,6 +4,7 @@ const writeData = require('../data/dataWriter')
 
 let page = 0 // Variable global para el seguimiento de la página
 const allowedRoleId = '1273142126217003008'
+let currentCollector = null
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -29,10 +30,16 @@ module.exports = {
         const command = interaction.options.getSubcommand()
         const data = loadData()
 
-        if (interaction.member.roles.cache.has(allowedRoleId))
+        if (!interaction.member.roles.cache.has(allowedRoleId)) return
+
+        // Si existe un recolector anterior, detenerlo antes de crear uno nuevo
+        if (currentCollector) {
+            currentCollector.stop()
+        }
 
         switch (command) {
             case 'view':
+                page = 0
                 const projectsPerPage = 5
 
                 const getEmbed = (page) => {
@@ -102,6 +109,7 @@ module.exports = {
 
                 const filter = i => i.user.id === interaction.user.id
                 const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 })
+                currentCollector = collector
 
                 collector.on('collect', async i => {
                     try {
