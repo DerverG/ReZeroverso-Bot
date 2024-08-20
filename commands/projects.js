@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, StringSelectMenuBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const loadData = require('../data/dataLoader');
-const { printTaskEmbed } = require('../data/tasks')
 
 let page = 0; // Variable global para el seguimiento de la página
 
@@ -38,7 +37,7 @@ module.exports = {
 
             return new StringSelectMenuBuilder()
                 .setCustomId('select_menu')
-                .setPlaceholder('Seleccionar')
+                .setPlaceholder('Seleccionar proyecto')
                 .addOptions(
                     limitedProjects.map(project => ({
                         label: project.title,
@@ -80,24 +79,42 @@ module.exports = {
         const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
 
         collector.on('collect', async i => {
-            if (i.customId === 'next') {
-                page++;
-            } else if (i.customId === 'previous') {
-                page--;
-            } else if (i.customId === 'update') {
-                // Puedes agregar la lógica para el botón de actualización aquí
-            } else if (i.customId === 'select_menu') {
-                // Lógica para manejar la selección del menú desplegable
-                const selectedId = i.values[0];
-                const selectedProject = data.projects.find(project => project.id.toString() === selectedId);
-                await i.update({ content: `Seleccionaste: ${selectedProject.title}`, components: [] });
-                return;
+            try {
+                // Asegúrate de que la interacción sea válida
+                if (!i.isButton() && !i.isStringSelectMenu()) return;
+        
+                // Manejar interacciones de botones
+                if (i.isButton()) {
+                    if (i.customId === 'next') {
+                        page++;
+                    } else if (i.customId === 'previous') {
+                        page--;
+                    }
+        
+                    // Actualizar el embed, el menú desplegable y los botones
+                    const updatedEmbed = getEmbed(page);
+                    const updatedSelectMenu = getSelectMenu(page);
+                    const updatedButtons = updateButtons(page);
+        
+                    await i.update({
+                        embeds: [updatedEmbed],
+                        components: [
+                            new ActionRowBuilder().addComponents(updatedSelectMenu),
+                            new ActionRowBuilder().addComponents(updatedButtons)
+                        ]
+                    });
+                }
+        
+                // Manejar interacciones de select menu (este bloque puede ser eliminado si ya se maneja en index.js)
+                if (i.isStringSelectMenu() && i.customId === 'select_menu') {
+                    const selectedId = i.values[0];
+                    const selectedProject = data.projects.find(project => project.id.toString() === selectedId);
+                    
+                    
+                }
+            } catch (error) {
+                console.error('Error al manejar la interacción:', error);
             }
-
-            // Actualizar el embed, los botones y el menú desplegable
-            const updatedEmbed = getEmbed(page);
-            const updatedSelectMenu = getSelectMenu(page);
-            await i.update({ embeds: [updatedEmbed], components: [new ActionRowBuilder().addComponents(updatedSelectMenu), new ActionRowBuilder().addComponents(updateButtons(page))] });
         });
 
         collector.on('end', collected => {

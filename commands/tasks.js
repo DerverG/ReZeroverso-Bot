@@ -1,17 +1,12 @@
-// tasks.js
 const { EmbedBuilder } = require('discord.js');
 
-function printTaskEmbed(interaction, taskId) {
-    // Aquí generas el embed que quieres enviar
+async function printTaskEmbed(interaction, title) {
     const embed = new EmbedBuilder()
-        .setTitle('Tarea Seleccionada')
-        .setDescription(`Detalles de la tarea con ID: ${taskId}`)
-        .setColor('#ff0000');
+        .setTitle(title)
+        .setColor('#00ffff')
+        .setDescription('Este es un embed con el título basado en el número seleccionado.');
 
-    // Enviar el embed al canal donde se ejecutó el comando
-    interaction.reply({ embeds: [embed] });
+    await interaction.reply({ embeds: [embed], ephemeral: false });
 }
 
-module.exports = {
-    printTaskEmbed
-};
+module.exports = { printTaskEmbed };

@@ -1,4 +1,4 @@
-const {Client, GatewayIntentBits, Partials, Collection} = require('discord.js')
+const {Client, GatewayIntentBits, Partials, Collection, Events} = require('discord.js')
 const config = require('dotenv').config()
 const writeData = require('../data/dataWriter')
 const loadData = require('../data/dataLoader')
@@ -6,6 +6,8 @@ const token = process.env.DISCORD_TOKEN
 const path = require('path')
 const fs = require('fs')
 const prefix = '!'
+
+const { printTaskEmbed } = require('../commands/tasks');
 
 const allowedRoleId = '1273142126217003008';
 
@@ -79,16 +81,19 @@ client.on('messageCreate', message => {
 })
 
 // Manage Interactions
-client.on('interactionCreate', async interaction => {
-    if (!interaction.isStringSelectMenu()) return // Verificar que la interacción es de tipo select menu
-    if (!interaction.member.roles.cache.has(allowedRoleId)) return // Limitar uso a un Rol
+client.on(Events.InteractionCreate, async interaction => {
+    if (!interaction.isCommand() && !interaction.isStringSelectMenu()) return;
 
+    if (interaction.isStringSelectMenu()) {
+        const selectedOption = interaction.values[0];
+        const data = loadData();
+        const selectedProject = data.projects.find(project => project.id.toString() === selectedOption);
 
-    if (interaction.customId === 'select_menu') {
-        // Obtener el valor seleccionado
-        const selectedOption = interaction.values[0]
-
-        // Enviar una respuesta basada en la opción seleccionada
-        await interaction.update({ content: `Has seleccionado: ${selectedOption}`, components: [] })
+        if (selectedProject) {
+            // Llamar a la función para imprimir el embed con el título del proyecto
+            await printTaskEmbed(interaction, selectedProject.title);
+        } else {
+            await interaction.reply({ content: 'Proyecto no encontrado', ephemeral: true });
+        }
     }
 })
