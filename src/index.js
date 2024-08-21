@@ -43,7 +43,7 @@ client.on('ready', () => {
 // Slash Commands - Command Handler
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return
-    if (!interaction.member.roles.cache.has(allowedRoleId)) return // Limitar uso a un Rol
+    //if (!interaction.member.roles.cache.has(allowedRoleId)) return // Limitar uso a un Rol
 
     const command = client.commands.get(interaction.commandName)
 
@@ -63,7 +63,7 @@ client.on('interactionCreate', async (interaction) => {
 client.on('messageCreate', message => {
     if (message.author.bot) return // Ignora mensajes de otros bots
     if (!message.content.startsWith(prefix)) return // Ignora mensajes que no comiencen con el prefijo
-    if (!message.member.roles.cache.has(allowedRoleId)) return // Limitar uso a un Rol
+    //if (!message.member.roles.cache.has(allowedRoleId)) return // Limitar uso a un Rol
 
     const args = message.content.slice(prefix.length).trim().split(/ +/)
     const commandName = args.shift().toLowerCase()

@@ -143,7 +143,17 @@ const slashRegister = async () => {
                                     .setDescription('Ingrese un ID de una tarea.')
                                     .setRequired(true)
                             })
-                        // Añadira un selector para el estado.
+                            .addStringOption(option =>
+                                option
+                                    .setName('status')
+                                    .setDescription('Seleccione el nuevo estado de la tarea.')
+                                    .setRequired(true)
+                                    .addChoices(
+                                        { name: 'Pendiente', value: 'Pendiente' },
+                                        { name: 'En Progreso', value: 'En Progreso' },
+                                        { name: 'Completada', value: 'Completada' }
+                                    )
+                            )
                     })
                     .addSubcommand(subcommand => {
                         return subcommand

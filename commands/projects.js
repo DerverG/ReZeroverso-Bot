@@ -64,7 +64,7 @@ module.exports = {
         const command = interaction.options.getSubcommand()
         const data = loadData()
 
-        if (!interaction.member.roles.cache.has(allowedRoleId)) return
+        //if (!interaction.member.roles.cache.has(allowedRoleId)) return
 
         // Si existe un recolector anterior, detenerlo antes de crear uno nuevo
         if (currentCollector) {
@@ -87,7 +87,7 @@ module.exports = {
                     return new EmbedBuilder()
                         .setTitle('**Lista de Proyectos**')
                         .setColor('#00ffff')
-                        .setImage('https://media.discordapp.net/attachments/1274664335485960232/1274666549269233755/banner_bot_discord.png?ex=66c3153b&is=66c1c3bb&hm=6e264c4ed8b655ca4017360d8208221ec0bd41f76070c6d55f691edf21887778&=&format=webp&quality=lossless')
+                        .setImage('https://media.discordapp.net/attachments/1274664335485960232/1275620688644014191/banner_bot_discord.png?ex=66c68dd8&is=66c53c58&hm=8e68cf691b0469fb948025a78add5740489e0e4e6091755e457f9945136160b6&=&format=webp&quality=lossless')
                         .setFooter({ text: `Página ${page + 1} de ${Math.ceil(data.projects.length / projectsPerPage)}` })
                         .setFields(
                             { name: 'ID', value: IDs, inline: true },
@@ -190,6 +190,10 @@ module.exports = {
                 })
                 break
             case 'add':
+                if (!interaction.member.roles.cache.has(allowedRoleId)) {
+                    await interaction.reply({ content: 'No tienes permiso para usar este comando.', ephemeral: true });
+                    return;
+                }
                 const title = interaction.options.getString('title')
                 const newID = Math.max(...data.projects.map(project => project.id)) + 1
 
@@ -210,6 +214,10 @@ module.exports = {
                 break
 
             case 'remove':
+                if (!interaction.member.roles.cache.has(allowedRoleId)) {
+                    await interaction.reply({ content: 'No tienes permiso para usar este comando.', ephemeral: true });
+                    return;
+                }
                 const idToRemove = interaction.options.getInteger('id')
                 const projectIndex = data.projects.findIndex(project => project.id === idToRemove)
 
@@ -222,6 +230,10 @@ module.exports = {
                 }
                 break
             case 'update':
+                if (!interaction.member.roles.cache.has(allowedRoleId)) {
+                    await interaction.reply({ content: 'No tienes permiso para usar este comando.', ephemeral: true });
+                    return;
+                }
                 const idToUpdate = interaction.options.getInteger('id')
                 const newStatus = interaction.options.getString('status')
 
