@@ -125,7 +125,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
             if (selectedProject) {
                 // Llamar a la función para imprimir el embed con el título del proyecto
-                await printTaskEmbed(interaction, selectedProject.title)
+                await printTaskEmbed(interaction, selectedProject.id, selectedProject.title)
             } else {
                 await interaction.reply({ content: 'Proyecto no encontrado', ephemeral: true })
             }
