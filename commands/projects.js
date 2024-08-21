@@ -35,6 +35,29 @@ module.exports = {
                         .setDescription('Ingrese un ID de un proyecto.')
                         .setRequired(true)
                 )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('update')
+                .setDescription('Actualiza el estado de un proyecto')
+                .addIntegerOption(option =>
+                    option
+                        .setName('id')
+                        .setDescription('Ingrese un ID de un proyecto.')
+                        .setRequired(true)
+                )
+                .addStringOption(option =>
+                    option
+                        .setName('status')
+                        .setDescription('Seleccione el nuevo estado del proyecto.')
+                        .setRequired(true)
+                        .addChoices(
+                            { name: 'Finalizado', value: 'Finalizado' },
+                            { name: 'En Progreso', value: 'En Progreso' },
+                            { name: 'Pausado', value: 'Pausado' }
+                        )
+                )
+
         ),
 
     async execute(interaction) {
@@ -179,7 +202,7 @@ module.exports = {
 
                 // Agregar al JSON
                 data.projects.push(newProject)
-                
+
                 // Guardar cambios
                 writeData(data)
 
@@ -191,17 +214,33 @@ module.exports = {
                 const projectIndex = data.projects.findIndex(project => project.id === idToRemove)
 
                 if (projectIndex !== -1) {
-                        const removedProject = data.projects.splice(projectIndex, 1)[0]
-                        writeData(data)
-                        await interaction.reply({ content: `El proyecto **${removedProject.title}** ha sido eliminado correctamente.`, ephemeral: true })
-                    } else {
-                        await interaction.reply({ content: 'No se pudo encontrar un proyecto con ese ID.', ephemeral: true })
-                    }
+                    const removedProject = data.projects.splice(projectIndex, 1)[0]
+                    writeData(data)
+                    await interaction.reply({ content: `El proyecto **${removedProject.title}** ha sido eliminado correctamente.`, ephemeral: true })
+                } else {
+                    await interaction.reply({ content: 'No se pudo encontrar un proyecto con ese ID.', ephemeral: true })
+                }
                 break
             case 'update':
-                    
-                break
+                const idToUpdate = interaction.options.getInteger('id')
+                const newStatus = interaction.options.getString('status')
 
+                const projectToUpdate = data.projects.find(project => project.id === idToUpdate)
+
+                if (projectToUpdate) {
+                    // Actualiza el estado del proyecto
+                    projectToUpdate.status = newStatus
+            
+                    // Guarda los cambios
+                    writeData(data)
+            
+                    // Responde a la interacción
+                    await interaction.reply({ content: `El estado del proyecto **${projectToUpdate.title}** ha sido actualizado a **${newStatus}**.`, ephemeral: true })
+                } else {
+                    // Si no se encontró el proyecto, informa al usuario
+                    await interaction.reply({ content: `No se encontró un proyecto con el ID ${idToUpdate}.`, ephemeral: true })
+                }
+                break
         }
     },
 }

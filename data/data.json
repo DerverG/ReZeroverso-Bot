@@ -4,41 +4,6 @@
       "id": 1,
       "title": "Volumen 12 [LN]",
       "status": "Finalizado"
-    },
-    {
-      "id": 2,
-      "title": "Volumen 13 [LN]",
-      "status": "En Progreso"
-    },
-    {
-      "id": 3,
-      "title": "Volumen 29 [WN]",
-      "status": "Pausado"
-    },
-    {
-      "id": 4,
-      "title": "Volumen 30 [WN]",
-      "status": "Pendiente"
-    },
-    {
-      "id": 5,
-      "title": "Volumen 14 [LN]",
-      "status": "Progreso"
-    },
-    {
-      "id": 6,
-      "title": "Volumen 15 [LN]",
-      "status": "Pendiente"
-    },
-    {
-      "id": 7,
-      "title": "Volumen 16 [LN]",
-      "status": "Pendiente"
-    },
-    {
-      "id": 8,
-      "title": "Prueba 1",
-      "status": "Pendiente"
     }
   ],
   "tasks": [
