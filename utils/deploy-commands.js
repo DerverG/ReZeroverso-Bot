@@ -1,5 +1,5 @@
 const config = require('dotenv').config()
-const { REST, Routes, SlashCommandBuilder } = require('discord.js')
+const { REST, Routes, SlashCommandBuilder, CommandInteraction } = require('discord.js')
 
 // Info needed for slash commands
 const botID = process.env.DISCORD_BOT
@@ -177,7 +177,11 @@ const slashRegister = async () => {
                                     .setDescription('Ingrese el usuario a cargo.')
                                     .setRequired(true)
                             })
-                    })
+                    }),
+                // Export Data
+                new SlashCommandBuilder()
+                    .setName('export')
+                    .setDescription('Exporta los datos en un archivo .json')
 
             ]
         })
