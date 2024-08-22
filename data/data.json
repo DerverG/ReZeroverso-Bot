@@ -129,19 +129,6 @@
           "responsible": "330090333557751819"
         }
       ]
-    },
-    {
-      "id": 5,
-      "title": "Example",
-      "status": "Pendiente",
-      "tasks": [
-        {
-          "id": 1,
-          "title": "Ejem",
-          "status": "Completada",
-          "responsible": "330090333557751819"
-        }
-      ]
     }
   ]
 }
