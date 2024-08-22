@@ -3,143 +3,145 @@
     {
       "id": 1,
       "title": "Volumen 12 [LN]",
-      "status": "Finalizado"
+      "status": "Finalizado",
+      "tasks": [
+        {
+          "id": 1,
+          "title": "Capitulo 1",
+          "status": "Completada",
+          "responsible": "330090333557751819"
+        },
+        {
+          "id": 2,
+          "title": "Capitulo 2",
+          "status": "Completada",
+          "responsible": "488430725729615881"
+        },
+        {
+          "id": 3,
+          "title": "Capitulo 3",
+          "status": "Completada",
+          "responsible": "873225856301019216"
+        },
+        {
+          "id": 4,
+          "title": "Capitulo 4",
+          "status": "Completada",
+          "responsible": "405819261462773770"
+        },
+        {
+          "id": 5,
+          "title": "Capitulo 5",
+          "status": "Completada",
+          "responsible": "405819261462773770"
+        },
+        {
+          "id": 6,
+          "title": "Capitulo 6",
+          "status": "Completada",
+          "responsible": "330090333557751819"
+        }
+      ]
     },
     {
       "id": 2,
       "title": "Volumen 13 [LN]",
-      "status": "En Progreso"
+      "status": "En Progreso",
+      "tasks": [
+        {
+          "id": 1,
+          "title": "Capitulo 1",
+          "status": "Completada",
+          "responsible": "389274330053345280"
+        },
+        {
+          "id": 2,
+          "title": "Capitulo 2",
+          "status": "Pendiente",
+          "responsible": null
+        },
+        {
+          "id": 3,
+          "title": "Capitulo 3",
+          "status": "En Progreso",
+          "responsible": "330090333557751819"
+        },
+        {
+          "id": 4,
+          "title": "Capitulo 4",
+          "status": "Pendiente",
+          "responsible": null
+        },
+        {
+          "id": 5,
+          "title": "Capitulo 5",
+          "status": "Pendiente",
+          "responsible": null
+        },
+        {
+          "id": 6,
+          "title": "Capitulo 6",
+          "status": "Pendiente",
+          "responsible": null
+        },
+        {
+          "id": 7,
+          "title": "Capitulo 7",
+          "status": "Pendiente",
+          "responsible": null
+        },
+        {
+          "id": 8,
+          "title": "Capitulo 8",
+          "status": "Pendiente",
+          "responsible": null
+        }
+      ]
     },
     {
       "id": 3,
       "title": "Volumen 14 [LN]",
-      "status": "En Progreso"
+      "status": "En Progreso",
+      "tasks": [
+        {
+          "id": 1,
+          "title": "Capitulo X - X",
+          "status": "En Progreso",
+          "responsible": "405819261462773770"
+        }
+      ]
     },
     {
       "id": 4,
       "title": "Volumen 29 [WN]",
-      "status": "Pausado"
-    }
-  ],
-  "tasks": [
-    {
-      "id": 1,
-      "project_id": 1,
-      "title": "Capitulo 1",
-      "status": "Completada",
-      "responsible": "330090333557751819"
-    },
-    {
-      "id": 2,
-      "project_id": 1,
-      "title": "Capitulo 2",
-      "status": "Completada",
-      "responsible": "488430725729615881"
-    },
-    {
-      "id": 3,
-      "project_id": 1,
-      "title": "Capitulo 3",
-      "status": "Completada",
-      "responsible": "873225856301019216"
-    },
-    {
-      "id": 4,
-      "project_id": 1,
-      "title": "Capitulo 4",
-      "status": "Completada",
-      "responsible": "405819261462773770"
+      "status": "Pausado",
+      "tasks": [
+        {
+          "id": 1,
+          "title": "Capitulo 40 - 54",
+          "status": "Pendiente",
+          "responsible": "330090333557751819"
+        },
+        {
+          "id": 2,
+          "title": "SS",
+          "status": "Pendiente",
+          "responsible": "330090333557751819"
+        }
+      ]
     },
     {
       "id": 5,
-      "project_id": 1,
-      "title": "Capitulo 5",
-      "status": "Completada",
-      "responsible": "405819261462773770"
-    },
-    {
-      "id": 6,
-      "project_id": 1,
-      "title": "Capitulo 6",
-      "status": "Completada",
-      "responsible": "330090333557751819"
-    },
-    {
-      "id": 7,
-      "project_id": 2,
-      "title": "Capitulo 1",
-      "status": "Completada",
-      "responsible": "389274330053345280"
-    },
-    {
-      "id": 8,
-      "project_id": 2,
-      "title": "Capitulo 2",
+      "title": "Example",
       "status": "Pendiente",
-      "responsible": null
-    },
-    {
-      "id": 9,
-      "project_id": 2,
-      "title": "Capitulo 3",
-      "status": "En Progreso",
-      "responsible": "330090333557751819"
-    },
-    {
-      "id": 10,
-      "project_id": 2,
-      "title": "Capitulo 4",
-      "status": "Pendiente",
-      "responsible": null
-    },
-    {
-      "id": 11,
-      "project_id": 2,
-      "title": "Capitulo 5",
-      "status": "Pendiente",
-      "responsible": null
-    },
-    {
-      "id": 12,
-      "project_id": 2,
-      "title": "Capitulo 6",
-      "status": "Pendiente",
-      "responsible": null
-    },
-    {
-      "id": 13,
-      "project_id": 2,
-      "title": "Capitulo 7",
-      "status": "Pendiente",
-      "responsible": null
-    },
-    {
-      "id": 14,
-      "project_id": 2,
-      "title": "Capitulo 8",
-      "status": "Pendiente",
-      "responsible": null
-    },
-    {
-      "id": 15,
-      "project_id": 3,
-      "title": "Capitulo X - X",
-      "status": "En Progreso",
-      "responsible": "405819261462773770"
-    },
-    {
-      "id": 16,
-      "project_id": 4,
-      "title": "Capitulo 40 - 54",
-      "status": "Pendiente",
-      "responsible": "330090333557751819"
-    },
-    {
-      "id": 17,
-      "project_id": 4,
-      "title": "SS",
-      "status": "Pendiente",
-      "responsible": "330090333557751819"
+      "tasks": [
+        {
+          "id": 1,
+          "title": "Ejem",
+          "status": "Completada",
+          "responsible": "330090333557751819"
+        }
+      ]
     }
   ]
 }

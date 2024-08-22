@@ -201,7 +201,8 @@ module.exports = {
                 const newProject = {
                     id: newID,
                     title: title,
-                    status: 'Pendiente' // default
+                    status: 'Pendiente', // default
+                    tasks: []
                 }
 
                 // Agregar al JSON

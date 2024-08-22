@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, StringSelectMenuBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js')
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js')
 const loadData = require('../data/dataLoader')
 const writeData = require('../data/dataWriter')
 
@@ -15,8 +15,8 @@ async function printTaskEmbed(interaction, idProject, titleProject) {
         return
     }
 
-    // Encuentra las tareas asociadas con el proyecto
-    const tasks = data.tasks.filter(t => t.project_id === idProject)
+    // Obtener las tareas asociadas al proyecto
+    const tasks = project.tasks || []
     if (tasks.length === 0) {
         await interaction.reply({ content: 'No hay tareas para este proyecto.', ephemeral: true })
         return
@@ -106,6 +106,29 @@ module.exports = {
                             { name: 'Completada', value: 'Completada' }
                         )
                 )
+        )
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('responsible')
+                .setDescription('Asignar un responsable a una tarea.')
+                .addIntegerOption(option =>
+                    option
+                        .setName('idproject')
+                        .setDescription('Ingresa un ID de un proyecto.')
+                        .setRequired(true)
+                )
+                .addIntegerOption(option =>
+                    option
+                        .setName('idtask')
+                        .setDescription('Ingrese un ID de una tarea.')
+                        .setRequired(true)
+                )
+                .addUserOption(option =>
+                    option
+                        .setName('user')
+                        .setDescription('Seleccione el usuario responsable.')
+                        .setRequired(true)
+                )
         ),
 
     async execute(interaction) {
@@ -120,16 +143,23 @@ module.exports = {
                 }
                 const project_id = interaction.options.getInteger('idproject')
                 const taskTitle = interaction.options.getString('title')
-                const newTaskID = Math.max(...data.tasks.map(task => task.id), 0) + 1
+                const project = data.projects.find(p => p.id === project_id)
+
+                if (!project) {
+                    await interaction.reply({ content: 'Proyecto no encontrado.', ephemeral: true });
+                    return;
+                }
+
+                const newTaskID = Math.max(...(project.tasks.map(task => task.id) || []), 0) + 1
 
                 const newTask = {
                     id: newTaskID,
-                    project_id: project_id, // Corrección: Debe ser project_id
                     title: taskTitle,
                     status: 'Pendiente' // default
                 }
 
-                data.tasks.push(newTask)
+                if (!project.tasks) project.tasks = []
+                project.tasks.push(newTask)
                 writeData(data)
 
                 await interaction.reply({ content: `Tarea añadida con ID: ${newTaskID}`, ephemeral: true })
@@ -143,10 +173,16 @@ module.exports = {
                 const projectIDToRemove = interaction.options.getInteger('idproject')
                 const taskIDToRemove = interaction.options.getInteger('idtask')
 
-                const taskIndex = data.tasks.findIndex(task => task.id === taskIDToRemove && task.project_id === projectIDToRemove)
+                const projectToRemoveFrom = data.projects.find(p => p.id === projectIDToRemove)
+                if (!projectToRemoveFrom || !projectToRemoveFrom.tasks) {
+                    await interaction.reply({ content: 'No se encontró el proyecto o no tiene tareas.', ephemeral: true });
+                    return;
+                }
+
+                const taskIndex = projectToRemoveFrom.tasks.findIndex(task => task.id === taskIDToRemove)
 
                 if (taskIndex !== -1) {
-                    const removedTask = data.tasks.splice(taskIndex, 1)[0]
+                    const removedTask = projectToRemoveFrom.tasks.splice(taskIndex, 1)[0]
                     writeData(data)
 
                     await interaction.reply({ content: `Tarea con ID: ${removedTask.id} eliminada`, ephemeral: true })
@@ -164,7 +200,13 @@ module.exports = {
                 const taskIDToUpdate = interaction.options.getInteger('idtask')
                 const newStatus = interaction.options.getString('status')
 
-                const taskToUpdate = data.tasks.find(task => task.id === taskIDToUpdate && task.project_id === projectIDToUpdate)
+                const projectToUpdateIn = data.projects.find(p => p.id === projectIDToUpdate)
+                if (!projectToUpdateIn || !projectToUpdateIn.tasks) {
+                    await interaction.reply({ content: 'No se encontró el proyecto o no tiene tareas.', ephemeral: true });
+                    return;
+                }
+
+                const taskToUpdate = projectToUpdateIn.tasks.find(task => task.id === taskIDToUpdate)
 
                 if (taskToUpdate) {
                     taskToUpdate.status = newStatus
@@ -175,6 +217,7 @@ module.exports = {
                     await interaction.reply({ content: 'No se encontró la tarea con ese ID.', ephemeral: true })
                 }
                 break
+
             case 'responsible':
                 if (!interaction.member.roles.cache.has(allowedRoleId)) {
                     await interaction.reply({ content: 'No tienes permiso para usar este comando.', ephemeral: true });
@@ -183,9 +226,14 @@ module.exports = {
                 const projectIDForResponsible = interaction.options.getInteger('idproject')
                 const taskIDForResponsible = interaction.options.getInteger('idtask')
                 const newResponsible = interaction.options.getUser('user').id
-                
 
-                const taskToUpdateResponsible = data.tasks.find(task => task.id === taskIDForResponsible && task.project_id === projectIDForResponsible)
+                const projectForResponsible = data.projects.find(p => p.id === projectIDForResponsible)
+                if (!projectForResponsible || !projectForResponsible.tasks) {
+                    await interaction.reply({ content: 'No se encontró el proyecto o no tiene tareas.', ephemeral: true });
+                    return;
+                }
+
+                const taskToUpdateResponsible = projectForResponsible.tasks.find(task => task.id === taskIDForResponsible)
 
                 if (taskToUpdateResponsible) {
                     taskToUpdateResponsible.responsible = newResponsible
